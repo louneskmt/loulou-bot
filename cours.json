@@ -1,0 +1,91 @@
+{
+  "lundi": {
+    "b1": {
+      "cours": "Mécanique",
+      "amphi": true,
+      "numero": "H5"
+    },
+    "b2": {
+      "cours": "Mécanique",
+      "amphi": true,
+      "numero": "H5"
+    }
+  },
+  "mardi": {
+    "b1": {
+      "cours": "Algèbre",
+      "amphi": true,
+      "numero": "H6"
+    },
+    "b2": {
+      "cours": "Algèbre",
+      "amphi": true,
+      "numero": "H6"
+    }
+  },
+  "mercredi": {
+    "b1": {
+      "cours": "Systèmes oscillants",
+      "amphi": false,
+      "numero": "112 (336)"
+    },
+    "b2": {
+      "cours": "Systèmes oscillants",
+      "amphi": false,
+      "numero": "112 (336)"
+    }
+  },
+  "jeudi": {
+    "b1": {
+      "cours": "Algèbre linéaire TD",
+      "amphi": false,
+      "numero": "118"
+    },
+    "b2": {
+      "cours": "Analyse TD",
+      "amphi": false,
+      "numero": "030"
+    }
+  },
+  "vendredi": {
+    "b1": {
+      "cours": "Électrocinétique",
+      "amphi": false,
+      "numero": "- Voir ci-dessous"
+    },
+    "b2": {
+      "cours": "Électrocinétique",
+      "amphi": false,
+      "numero": "- Voir ci-dessous"
+    },
+    "salles": {
+      "groupeA": {
+        "282": "116-118 (333)",
+        "63": "200 (333)",
+        "203": "116-118 (333)",
+        "273": "116-118 (333)",
+        "34": "116-118 (333)",
+        "104": "200 (333)",
+        "244": "200 (333)"
+      },
+      "groupeB": {
+        "282": "046-048 (333)",
+        "63": "204 (333)",
+        "203": "046-048 (333)",
+        "273": "046-048 (333)",
+        "34": "046-048 (333)",
+        "104": "204 (333)",
+        "244": "204 (333)"
+      },
+      "groupeC": {
+        "282": "038 (336)",
+        "63": "Plateau",
+        "203": "038 (336)",
+        "273": "038 (336)",
+        "34": "038 (336)",
+        "104": "Plateau",
+        "244": "Plateau"
+      }
+    }
+  }
+}
