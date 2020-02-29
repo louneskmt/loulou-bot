@@ -118,7 +118,13 @@ async function generateEmbedAndSend(date, cours, idChannel="619974049560526867")
 						author: {
 							name: 'Le grand et magnifique Lounès',
 							icon_url: 'https://ipfs.io/ipfs/QmcJHHrtNZBgG7YpmTFRh4QYynZnrifsFL8TLUXcGeSzUN?filename=IMG_3424.jpeg'
-						}
+						},
+            fields: [
+      				{
+      					name: 'Météo à Orsay',
+      					value: `Il fait actuellement ${(body.main.temp - 273.15).toFixed(1)}°C et le temps est ${temps} !`
+      				},
+            ]
 					}
 					client.channels.get(idChannel).send({embed: chill});
 					return;
