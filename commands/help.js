@@ -1,6 +1,6 @@
 module.exports = {
 	name: 'help',
-	description: 'Obtenir l'aide',
+	description: 'Obtenir l\'aide',
 	execute(message, args) {
     message.channel.send('HELP :      \n \
 > - ``bv [message_id]`` : ajoute les réactions "BIEN VU"\n \
