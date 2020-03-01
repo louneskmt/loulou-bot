@@ -54,7 +54,7 @@ client.on('message', message => {
 
 });
 
-var sendRoom = schedule.scheduleJob({hour: 7, minute: 30}, () => {
+var sendRoom = schedule.scheduleJob({hour: 6, minute: 30}, () => {
 	generateEmbedAndSend(new Date(), cours)
 });
 
