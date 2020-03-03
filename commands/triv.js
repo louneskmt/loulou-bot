@@ -9,11 +9,11 @@ module.exports = {
 };
 
 async function reactTriv(msg) {
-  await msg.react('🇹')
-  await msg.react('🇷')
-  await msg.react('🇮')
-  await msg.react('🇻')
-  await msg.react('🇮')
-  await msg.react('🇦')
-  await msg.react('🇱')
+  await msg.react('🇹');
+  await msg.react('🇷');
+  await msg.react('🇮');
+  await msg.react('🇻');
+  await msg.react('🇮');
+  await msg.react('🇦');
+  await msg.react('🇱');
 }
