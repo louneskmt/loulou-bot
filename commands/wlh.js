@@ -11,7 +11,6 @@ module.exports = {
 async function reactWlh(msg) {
   await msg.react('🇼');
   await msg.react('🅰️');
-  await msg.react('󠁌󠁌󠁌󠁌L');
   await msg.react('🇱');
   await msg.react('🇦');
   await msg.react('🇭');
