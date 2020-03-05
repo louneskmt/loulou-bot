@@ -31,8 +31,8 @@ client.login(process.env.TOKEN);
 client.on('message', message => {
 	if (message.author.bot) return;
 	response(message);
-  
-  message.guild.members.get('229222945610792961').setNickname("Jean-Eude");
+
+  // message.guild.members.get('229222945610792961').setNickname("Jean-Eude");
 
 	if (!message.content.startsWith(prefix)) return;
   const args = message.content.slice(prefix.length).split(' ');
