@@ -31,12 +31,8 @@ client.login(process.env.TOKEN);
 client.on('message', message => {
 	if (message.author.bot) return;
 	response(message);
-	if(message.content == "TestEmbed") {
-		generateEmbedAndSend(new Date(), cours, message.channel.id)
-	}
-	if(message.content == "TestEmbed2") {
-		generateEmbedAndSend(new Date(2020,2,5), cours, message.channel.id)
-	}
+  
+  message.guild.members.get('229222945610792961').setNickname("Jean-Eude");
 
 	if (!message.content.startsWith(prefix)) return;
   const args = message.content.slice(prefix.length).split(' ');
