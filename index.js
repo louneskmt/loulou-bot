@@ -50,8 +50,17 @@ client.on('message', message => {
 
 });
 
-var sendRoom = schedule.scheduleJob({hour: 6, minute: 30}, () => {
-	generateEmbedAndSend(new Date(), cours)
+// var sendRoom = schedule.scheduleJob({hour: 6, minute: 30}, () => {
+// 	generateEmbedAndSend(new Date(), cours)
+// });
+
+var phrases = require('./phrases.js');
+var i = 0;
+var sendRoom = schedule.scheduleJob({hour: 11, minute: 00}, () => {
+  if(i < phrases.length) {
+    client.channels.get(idChannel).send(phrases[i]);
+    i++;
+  }
 });
 
 async function generateEmbedAndSend(date, cours, idChannel="619974049560526867") {
