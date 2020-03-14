@@ -58,7 +58,7 @@ var phrases = require('./phrases.js');
 var i = 0;
 var sendRoom = schedule.scheduleJob({hour: 11, minute: 00}, () => {
   if(i < phrases.length) {
-    client.channels.get(idChannel).send(phrases[i]);
+    client.channels.get("619974049560526867").send(phrases[i]);
     i++;
   }
 });
