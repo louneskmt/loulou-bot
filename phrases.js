@@ -5,4 +5,4 @@ var phrases = [
   "Les exercices d'algèbre ne vont pas se faire tous seuls, retourne travailler fainéant !",
 ];
 
-export default phrases;
+module.exports = phrases;
