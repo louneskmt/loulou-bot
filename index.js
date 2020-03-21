@@ -36,7 +36,17 @@ client.on('message', message => {
   const args = message.content.slice(prefix.length).split(' ');
   const commandName = args.shift().toLowerCase();
 
-  if(commandName === "change-avatar") changeAvatar(message);
+  if(commandName === "change-avatar") {
+    if(message.author.id !== "388352032790151189") return;
+    try {
+      url = message.attachments.first().url;
+      console.log("Changing avatar to ", url);
+      client.user.setAvatar(url);
+    } catch(err) {
+      console.log("Error ", err)
+    }
+
+  }
 
   if (!client.commands.has(commandName)) return;
 	const command = client.commands.get(commandName);
@@ -190,11 +200,4 @@ async function generateEmbedAndSend(date, cours, idChannel="619974049560526867")
 			client.channels.get(idChannel).send({embed: electroEmbed});
 		}
 	});
-}
-
-const changeAvatar = (message) => {
-  if(message.author.id !== 388352032790151189) return;
-  url = message.attachments.first().url;
-  console.log("Changing avatar to ", url);
-  client.user.setAvater(url);
 }
