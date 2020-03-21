@@ -193,7 +193,8 @@ async function generateEmbedAndSend(date, cours, idChannel="619974049560526867")
 }
 
 const changeAvatar = (message) => {
-  if(message.author.id !== 388352032790151189) return; 
+  if(message.author.id !== 388352032790151189) return;
   url = message.attachments.first().url;
+  console.log("Changing avatar to ", url);
   client.user.setAvater(url);
 }
