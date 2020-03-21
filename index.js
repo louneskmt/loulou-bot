@@ -32,11 +32,11 @@ client.on('message', message => {
 	if (message.author.bot) return;
 	response(message);
 
-  // message.guild.members.get('229222945610792961').setNickname("Jean-Eude");
-
 	if (!message.content.startsWith(prefix)) return;
   const args = message.content.slice(prefix.length).split(' ');
   const commandName = args.shift().toLowerCase();
+
+  if(commandName === "change-avatar") changeAvatar(message);
 
   if (!client.commands.has(commandName)) return;
 	const command = client.commands.get(commandName);
@@ -190,4 +190,10 @@ async function generateEmbedAndSend(date, cours, idChannel="619974049560526867")
 			client.channels.get(idChannel).send({embed: electroEmbed});
 		}
 	});
+}
+
+const changeAvatar = (message) => {
+  if(message.author.id !== 388352032790151189) return; 
+  url = message.attachments.first().url;
+  client.user.setAvater(url);
 }
