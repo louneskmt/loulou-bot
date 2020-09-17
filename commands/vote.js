@@ -30,7 +30,7 @@ module.exports = {
         return;
       }
 
-      maxtime = args.filter(arg => arg.name === 'maxtime')[0] ? args.filter(arg => arg.name === 'maxtime')[0].params.shift() : 10000; 
+      maxtime = args.filter(arg => arg.name === 'maxtime')[0] ? args.filter(arg => arg.name === 'maxtime')[0].params.shift() * 60000 : 86400000; 
 
       if(choix.length > emojiList.length) return message.channel.send('Please provide less than ' + emojiList.length + ' choices.');
       
@@ -38,6 +38,8 @@ module.exports = {
       choix.forEach((chx, index) => {
         options += `${emojiList[index]} - ${chx}\n`;
       });
+
+      let resultats = new Array(choix.length);
 
       const embed = new Discord.MessageEmbed()
         .setTitle('Un nouveau vote a été créé')
@@ -73,7 +75,7 @@ module.exports = {
                 collector.on('collect', (react, user) => {
                   const embed = new Discord.MessageEmbed()
                     .setTitle('✅ Vote pris en compte !')
-                    .setDescription(`Vous avez voté pour l'option ${react.emoji}. Ce vote n'est plus modifiable.`)
+                    .setDescription(`Vous avez voté pour l'option ${react.emoji.name}. Ce vote n'est plus modifiable.`)
                     .setColor('GREEN')
                   member.send(embed)
                 });
