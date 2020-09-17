@@ -29,7 +29,8 @@ module.exports = {
         question = args.filter(arg => arg.name === 'question')[0].params.shift();
         choix = args.filter(arg => arg.name === 'choix')[0].params;
         cible = args.filter(arg => arg.name === 'cible')[0].params.shift();
-        maxtime = args.filter(arg => arg.name === 'maxtime')[0] ? args.filter(arg => arg.name === 'maxtime')[0].params.shift() * 60000 : 86400000; 
+        maxtime = args.filter(arg => arg.name === 'maxtime')[0] ? args.filter(arg => arg.name === 'maxtime')[0].params.shift() * 60000 : 86400000;
+        maxchoices = args.filter(arg => arg.name === 'maxchoices')[0] ? args.filter(arg => arg.name === 'maxchoices')[0].params.shift() : 1;
       } catch (err) {
         message.channel.send('Missing parameter, please retry.')
         return;
@@ -40,14 +41,17 @@ module.exports = {
       if(choix.length > emojiList.length) return message.channel.send('Please provide less than ' + emojiList.length + ' choices.');
       
       let options = '';
+      for(i = 1; i < maxchoices; i++) {
+        options += `${whiteEmoji} - Vote blanc\n`;
+      }
       choix.forEach((chx, index) => {
         options += `${emojiList[index]} - ${chx}\n`;
       });
 
-      let resultats = new Array(choix.length).fill(0);
+      let resultats = new Array(choix.length + maxchoices).fill(0);
 
       const roleId = cible.match(/\d+/g)[0];
-      const announceTimeout = setTimeout(() => announceResults(resultats, { question, choix, roleId }), maxtime);
+      const announceTimeout = setTimeout(() => announceResults(resultats, { question, choix, roleId, maxchoices }), maxtime);
 
       message.guild.roles.fetch(roleId)
         .then(role => {
@@ -72,10 +76,13 @@ module.exports = {
             member
               .send(embed)
               .then(message => {
+                for(i = 1; i < maxchoices; i++) {
+                  message.react(whiteEmoji)
+                }
                 choix.forEach((chx, index) => message.react(emojiList[index]));
 
                 const filter = (reaction, user) => user.id != '676858994685640735';
-                const collector = message.createReactionCollector(filter, { time: maxtime, max: 1 });
+                const collector = message.createReactionCollector(filter, { time: maxtime, max: maxchoices });
                 collector.on('collect', (react, user) => console.log(`Collected ${react.emoji.name} from ${user.id}`));
 
                 collector.on('collect', (react, user) => {
@@ -90,7 +97,7 @@ module.exports = {
 
                   if(resultats.reduce((a,b)=>a+b) >= role.members.array().length) {
                     clearTimeout(announceTimeout);
-                    announceResults(resultats, { question, choix, roleId });
+                    announceResults(resultats, { question, choix, roleId, maxchoices });
                   }
                 });
               });
@@ -98,13 +105,13 @@ module.exports = {
         });
       }
 
-    function announceResults(resultats, { question, choix, roleId }) {
+    function announceResults(resultats, { question, choix, roleId, maxchoices }) {
       let resultsStr = '';
     
       console.log('Résultats : ' + resultats);
       message.guild.roles.fetch(roleId)
         .then(role => {
-          const number = role.members.array().length;
+          const number = role.members.array().length * maxchoices;
           const participants = resultats.reduce((a,b)=>a+b); 
 
           resultats.forEach((result, index) => {
@@ -117,7 +124,7 @@ module.exports = {
             .setTitle('Fin du vote !')
             .setDescription('Voici les résultats et statistiques de ce vote.')
             .addField('Question', question)
-            .addField('Nombre de participants :', `${resultats.reduce((a,b)=>a+b)}/${number}`, true)
+            .addField('Nombre de votes :', `${participants}/${number}`, true)
             .addField('Résultats', resultsStr)
             .setThumbnail('https://www.emoji.co.uk/files/emoji-one/objects-emoji-one/1974-ballot-box-with-ballot.png')
             .setColor('DARK_RED')
