@@ -52,7 +52,7 @@ module.exports = {
             .setThumbnail('https://www.emoji.co.uk/files/emoji-one/objects-emoji-one/1974-ballot-box-with-ballot.png')
             .addField('Question', question)
             .addField('Options', options)
-            .addField('Nombre de participants', role.members.length)
+            .addField('Nombre de participants', role.members.array().length)
             .setColor('DARK_RED')
           message.channel.send(embed);
 
@@ -97,7 +97,7 @@ module.exports = {
       let resultsStr = '';
     
       const role = await message.guild.roles.fetch(roleId);
-      const number = role.members.length;
+      const number = role.members.array().length;
     
       resultats.forEach((result, index) => {
         resultsStr += `${emojiList[index]} - ${chx}\n : ${result} voix sur ${number}, soit ${result*100/number}%\n`
