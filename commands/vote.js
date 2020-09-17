@@ -126,11 +126,16 @@ module.exports = {
           let exaequo = false;
           for(i = 1; i < resultats.length; i++) {
             if(resultats[i] > max) max = resultats[i];
-            if(resultats[i] = max) exaequo = true;
+            if(resultats[i] = max) { 
+              exaequo = true; 
+              break; 
+            };
           }
 
+          let trueMax = resultats.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0);
+
           if(participants == 0) embed.addField('Personne n\'a pas participé, il n\'y a donc pas de gagnant.', '❌❌', true);
-          else if (exaequo) embed.addField('Ex-aequo ! Il va falloir refaire un vote...', '↩️↩️', true);
+          else if (exaequo && max >= trueMax) embed.addField('Ex-aequo ! Il va falloir refaire un vote...', '↩️↩️', true);
           else embed.addField(`L'option "${choix[resultats.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0)]}" remporte donc ce vote !`, '🎉🎉', true);
 
           message.channel.send(embed);
