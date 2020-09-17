@@ -16,8 +16,8 @@ module.exports = {
       }
       
       message.channel.send(`Question : ${question}\nChoix : ${choix}\nCible : ${cible}`);
-      const roleId = cible.match(/\d+/g);
-      message.guild.roles.fetch(role)
+      const roleId = cible.match(/\d+/g)[0];
+      message.guild.roles.fetch(roleId)
         .then(role => {
           let members;
           role.members.forEach(member => members.push(member.nickname));
