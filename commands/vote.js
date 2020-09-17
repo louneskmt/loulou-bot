@@ -30,7 +30,7 @@ module.exports = {
         return;
       }
 
-      maxtime = args.filter(arg => arg.name === 'maxtime')[0].params.shift() | 10000;
+      maxtime = args.filter(arg => arg.name === 'maxtime')[0] ? args.filter(arg => arg.name === 'maxtime')[0].params.shift() : 10000; 
 
       if(choix.length > emojiList.length) return message.channel.send('Please provide less than ' + emojiList.length + ' choices.');
       
