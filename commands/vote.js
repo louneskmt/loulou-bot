@@ -77,18 +77,32 @@ module.exports = {
 
                 const filter = (reaction, user) => user.id != '676858994685640735';
                 const collector = message.createReactionCollector(filter, { time: maxtime, max: maxchoices });
-                collector.on('collect', (react, user) => console.log(`Collected ${react.emoji.name} from ${user.id}`));
 
+                let votes = 0;
+                let choosed = [];
+
+                collector.on('collect', (react, user) => console.log(`Collected ${react.emoji.name} from ${user.id}`));
                 collector.on('collect', (react, user) => {
+                  votes++;
+
                   const embed = new Discord.MessageEmbed()
                     .setTitle('✅ Vote pris en compte !')
                     .setDescription(`Vous avez voté pour l'option ${react.emoji}. Ce vote n'est plus modifiable.`)
                     .setColor('GREEN');
                   member.send(embed);
 
-                  let index = emojiList.indexOf(react.emoji.name);
-                  resultats[index] += 1;
+                  if(votes < maxchoices) member.send(`Il vous reste ${maxchoices-votes} votes ! Si vous désirez voter une seconde fois blanc, vous pouvez désélectionner la réaction, et la remettre. Attention, cela n'est pas possible pour les autres choix.`);
 
+                  let index = emojiList.indexOf(react.emoji.name);
+
+                  if(!choosed.includes(index)) {
+                    resultats[index] += 1;
+                    if(index != 0) choosed.push(index);
+                  }
+                  else member.send(`Vous ne pouvez pas voter plusieurs fois pour le même option.`)
+                });
+
+                collector.on('end', () => {
                   if(resultats.reduce((a,b)=>a+b) >= role.members.array().length) {
                     clearTimeout(announceTimeout);
                     announceResults(resultats, { question, choix, roleId, maxchoices });
