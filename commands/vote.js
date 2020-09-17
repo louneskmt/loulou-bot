@@ -39,7 +39,7 @@ module.exports = {
         options += `${emojiList[index]} - ${chx}\n`;
       });
 
-      let resultats = new Array(choix.length);
+      let resultats = new Array(choix.length).fill(0);
 
       const embed = new Discord.MessageEmbed()
         .setTitle('Un nouveau vote a été créé')
