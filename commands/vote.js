@@ -4,7 +4,7 @@ module.exports = {
 	execute(message, args) {
     let command = args[0];
     let question, choix, cible;
-    console.log("Vote")
+    console.log(" args :", args)
     if (command === 'start') {
       try {
         question = args.filter(arg => arg.name === 'question')[0].params.shift();
