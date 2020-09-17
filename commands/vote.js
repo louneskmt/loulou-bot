@@ -59,6 +59,7 @@ module.exports = {
             .addField('Question', question)
             .addField('Options', options)
             .addField('Nombre de participants', role.members.array().length)
+            .addField('Nombre de votes par participant', maxchoices)
             .setColor('DARK_RED')
           message.channel.send(embed);
 
@@ -69,6 +70,7 @@ module.exports = {
               .setThumbnail('https://www.emoji.co.uk/files/emoji-one/objects-emoji-one/1974-ballot-box-with-ballot.png')
               .addField('Question', question)
               .addField('Options', options)
+              .addField('Nombre de votes possibles', maxchoices)
               .setColor('DARK_RED')
             member
               .send(embed)
@@ -97,7 +99,7 @@ module.exports = {
                     resultats[index] += 1;
                     if(index != 0) choosed.push(index);
 
-                    if (votes < maxchoices && index == 0) member.send(`Il vous reste ${maxchoices-votes} votes ! Si vous désirez voter une seconde fois blanc, vous pouvez désélectionner la réaction, et la remettre. Attention, cela n'est pas possible pour les autres choix.`);
+                    if (votes < maxchoices && index == 0) member.send(`Il vous reste ${maxchoices-votes} vote(s) ! Si vous désirez voter une seconde fois blanc, vous pouvez désélectionner la réaction, et la remettre. Attention, cela n'est pas possible pour les autres choix.`);
                     else if (votes < maxchoices) member.send(`Il vous reste ${maxchoices-votes} votes ! Attention, vous ne pouvez pas voter plusieurs fois pour le même option.`);  
 
                     if(votes == maxchoices) collector.stop();
