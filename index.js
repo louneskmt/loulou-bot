@@ -33,8 +33,9 @@ client.on('message', message => {
 	response(message);
 
 	if (!message.content.startsWith(prefix)) return;
-  const args = message.content.slice(prefix.length).split(' ');
-  const commandName = args.shift().toLowerCase();
+	const tempArgs = message.content.slice(prefix.length).split(' ');
+	const commandName = tempArgs.shift().toLowerCase();
+	const args = [ tempArgs[1], ...parseArgs(message.content) ];
 
   if(commandName === "change-avatar") {
     if(message.author.id !== "388352032790151189") return;
@@ -72,6 +73,53 @@ var sendRoom = schedule.scheduleJob({hour: 11, minute: 00}, () => {
     i++;
   }
 });
+
+function parseArgs(str) {
+	const regex1 = /--[^-]+/g;
+	const regex2 = /[^\s"]+|"([^"]*)"/gi;
+	const regex3 = /--[^ ]+/gi;
+
+	var myArray = [];
+	var myArray2 = [];
+
+	var args = [];
+
+	do {
+		//Each call to exec returns the next regex match as an array
+		var match = regex1.exec(str);
+		if (match != null)
+		{
+				//Index 1 in the array is the captured group if it exists
+				//Index 0 is the matched text, which we use if no captured group exists
+				myArray.push(match[1] ? match[1] : match[0]);
+		}
+	} while (match != null);
+
+	var args = [];
+
+	myArray.forEach((str) => {
+		arg = {
+			name: str.match(regex3)[0].slice(2),
+			params: []
+		};
+
+		do {
+			//Each call to exec returns the next regex match as an array
+			var match = regex2.exec(str);
+			if (match != null)
+			{
+					//Index 1 in the array is the captured group if it exists
+					//Index 0 is the matched text, which we use if no captured group exists
+					arg.params.push(match[1] ? match[1] : match[0]);
+			}
+		} while (match != null);
+
+		arg.params = arg.params.slice(1);
+		args.push(arg);
+	});
+
+	return args;
+}
 
 async function generateEmbedAndSend(date, cours, idChannel="619974049560526867") {
 	await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Orsay,fr&APPID=8547e05195c2cf97032ff7518b7633a0`)
