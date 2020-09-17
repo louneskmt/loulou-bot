@@ -124,7 +124,7 @@ module.exports = {
           
           let max = resultats[0];
           let exaequo = false;
-          for(i = 1; i < results.length; i++) {
+          for(i = 1; i < resultats.length; i++) {
             if(resultats[i] > max) max = resultats[i];
             if(resultats[i] = max) exaequo = true;
           }
