@@ -129,7 +129,7 @@ module.exports = {
             if(resultats[i] = max) exaequo = true;
           }
 
-          if(participants = 0) embed.addField('Personne n\participé, il n\'y a donc pas de gagnant.');
+          if(participants == 0) embed.addField('Personne n\participé, il n\'y a donc pas de gagnant.');
           else if (exaequo) embed.addField('Ex-aequo ! Il va falloir refaire un vote...');
           else embed.addField(`L'option "${choix[resultats.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0)]}" remporte donc ce vote !`, '🎉🎉', true);
 
