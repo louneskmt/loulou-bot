@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 
 const emojiList = [
-  '\u26AA',
+  '\u2B1C',
 	'\u0031\u20E3',
 	'\u0032\u20E3',
 	'\u0033\u20E3',
@@ -44,7 +44,7 @@ module.exports = {
         options += `${emojiList[index]} - ${chx}\n`;
       });
 
-      let resultats = new Array(choix.length + 1).fill(0);
+      let resultats = new Array(choix.length).fill(0);
 
       const roleId = cible.match(/\d+/g)[0];
       const announceTimeout = setTimeout(() => announceResults(resultats, { question, choix, roleId }), maxtime);
