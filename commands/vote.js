@@ -39,22 +39,23 @@ module.exports = {
         options += `${emojiList[index]} - ${chx}\n`;
       });
 
-      const embed = new Discord.MessageEmbed()
-        .setTitle('Un nouveau vote a été créé')
-        .setDescription('Pour participer, veuillez vous référer au message privé qui vous a été envoyé.')
-        .setThumbnail('https://www.emoji.co.uk/files/emoji-one/objects-emoji-one/1974-ballot-box-with-ballot.png')
-        .addField('Question', question)
-        .addField('Options', options)
-        .setColor('DARK_RED')
-      message.channel.send(embed);
-
       let resultats = new Array(choix.length).fill(0);
 
+      const roleId = cible.match(/\d+/g)[0];
       const announceTimeout = setTimeout(() => announceResults(resultats, { question, choix, cible }), maxtime);
 
-      const roleId = cible.match(/\d+/g)[0];
       message.guild.roles.fetch(roleId)
         .then(role => {
+          const embed = new Discord.MessageEmbed()
+            .setTitle('Un nouveau vote a été créé')
+            .setDescription('Pour participer, veuillez vous référer au message privé qui vous a été envoyé.')
+            .setThumbnail('https://www.emoji.co.uk/files/emoji-one/objects-emoji-one/1974-ballot-box-with-ballot.png')
+            .addField('Question', question)
+            .addField('Options', options)
+            .addField('Nombre de participants', role.members.length)
+            .setColor('DARK_RED')
+          message.channel.send(embed);
+
           role.members.forEach(member => {
             const embed = new Discord.MessageEmbed()
               .setTitle('Nouveau vote !')
@@ -83,8 +84,8 @@ module.exports = {
                   resultats[index] += 1;
                   console.log(resultats);
                   if(resultats.reduce((a,b)=>a+b) >= role.members.length) {
-                    announceResults(resultats, { question, choix, cible });
                     clearTimeout(announceTimeout);
+                    announceResults(resultats, { question, choix, roleId });
                   }
                 });
               });
@@ -92,7 +93,7 @@ module.exports = {
         });
       }
 
-    async function announceResults(resultats, { question, choix, cible }) {
+    async function announceResults(resultats, { question, choix, roleId }) {
       let resultsStr = '';
     
       const role = await message.guild.roles.fetch(roleId);
