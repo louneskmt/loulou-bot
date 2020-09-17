@@ -36,7 +36,11 @@ module.exports = {
               .addField('Question', question)
               .addField('Options', options)
               .setColor('DARK_RED')
-            member.send(embed);
+            member
+              .send(embed)
+              .then(message => {
+                choix.forEach((chx, index) => message.react(`:regional_indicator_${String.fromCharCode(index + 97)}:`))
+              });
           });
         });
     }
