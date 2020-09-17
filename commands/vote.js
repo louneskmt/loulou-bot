@@ -26,8 +26,9 @@ module.exports = {
           role.members.forEach(member => {
 
             const embed = new Discord.MessageEmbed()
-              .setTitle('🗳️ Nouveau vote !')
+              .setTitle('Nouveau vote !')
               .setDescription('Votre participation a un vote est requise !')
+              .setThumbnail('https://www.emoji.co.uk/files/emoji-one/objects-emoji-one/1974-ballot-box-with-ballot.png')
               .addField('Question', question)
               .setColor('DARK_RED')
             member.send(embed);
