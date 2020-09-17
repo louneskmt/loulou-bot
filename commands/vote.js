@@ -41,14 +41,11 @@ module.exports = {
       if(choix.length > emojiList.length) return message.channel.send('Please provide less than ' + emojiList.length + ' choices.');
       
       let options = '';
-      for(i = 1; i < maxchoices; i++) {
-        options += `${whiteEmoji} - Vote blanc\n`;
-      }
       choix.forEach((chx, index) => {
         options += `${emojiList[index]} - ${chx}\n`;
       });
 
-      let resultats = new Array(choix.length + maxchoices).fill(0);
+      let resultats = new Array(choix.length).fill(0);
 
       const roleId = cible.match(/\d+/g)[0];
       const announceTimeout = setTimeout(() => announceResults(resultats, { question, choix, roleId, maxchoices }), maxtime);
@@ -76,9 +73,6 @@ module.exports = {
             member
               .send(embed)
               .then(message => {
-                for(i = 1; i < maxchoices; i++) {
-                  message.react(whiteEmoji)
-                }
                 choix.forEach((chx, index) => message.react(emojiList[index]));
 
                 const filter = (reaction, user) => user.id != '676858994685640735';
