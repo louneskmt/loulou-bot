@@ -12,9 +12,17 @@ module.exports = {
         cible = args.filter(arg => arg.name === 'cible')[0].params.shift();
       } catch (err) {
         message.channel.send('Missing parameter, please retry.')
+        return;
       }
       
       message.channel.send(`Question : ${question}\nChoix : ${choix}\nCible : ${cible}`);
+      const roleId = cible.match(/\d+/g);
+      message.guild.role.fetch(role)
+        .then(role => {
+          let members;
+          role.members.forEach(member => members.push(member.nickname));
+          message.channel.send(`Participants : ${members}`);
+        });
     }
 	},
 };
