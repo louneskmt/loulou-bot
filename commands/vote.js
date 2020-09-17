@@ -55,10 +55,10 @@ module.exports = {
               .setColor('DARK_RED')
             member
               .send(embed)
-              .then(async message => {
-                await choix.forEach((chx, index) => message.react(emojiList[index]));
+              .then(message => {
+                choix.forEach((chx, index) => message.react(emojiList[index]));
 
-                const filter = (reaction, user) => true;
+                const filter = (reaction, user) => user.id != '676858994685640735';
                 const collector = message.createReactionCollector(filter, { time: maxtime });
                 collector.on('collect', (react, user) => console.log(`Collected ${react.emoji.name} from ${user.id}`));
                 collector.on('end', collected => console.log(`Collected ${collected.size} items`));
