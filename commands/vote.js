@@ -100,18 +100,22 @@ module.exports = {
       message.guild.roles.fetch(roleId)
         .then(role => {
           const number = role.members.array().length;
+
+          resultats.forEach((result, index) => {
+            resultsStr += `${emojiList[index]} - ${choix[index]} : ${result} voix sur ${number}, soit ${result*100/number}%`;
+          });
         
           const embed = new Discord.MessageEmbed()
             .setTitle('Fin du vote !')
             .setDescription('Voici les résultats et statistiques de ce vote.')
             .addField('Question', question)
-            //.addField('Résultats', resultsStr)
+            .addField('Résultats', resultsStr)
+            .setThumbnail('https://www.emoji.co.uk/files/emoji-one/objects-emoji-one/1974-ballot-box-with-ballot.png')
             .setColor('DARK_RED')
 
+          
           resultats.forEach((result, index) => {
-            resultsStr += `${emojiList[index]} - ${choix[index]} : ${result} voix sur ${number}, soit ${result*100/number}%\n`
-
-            embed.addField(`${emojiList[index]} - ${choix[index]}`, `${result} voix sur ${number}, soit ${result*100/number}%`);
+            // embed.addField(`${emojiList[index]} - ${choix[index]}`, `${result} voix sur ${number}, soit ${result*100/number}%`);
           });
             
           message.channel.send(embed);
