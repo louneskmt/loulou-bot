@@ -20,17 +20,17 @@ module.exports = {
     let command = args[0];
     let question, choix, cible;
     console.log(" args :", args)
+
     if (command === 'start') {
       try {
         question = args.filter(arg => arg.name === 'question')[0].params.shift();
         choix = args.filter(arg => arg.name === 'choix')[0].params;
         cible = args.filter(arg => arg.name === 'cible')[0].params.shift();
+        maxtime = args.filter(arg => arg.name === 'maxtime')[0] ? args.filter(arg => arg.name === 'maxtime')[0].params.shift() * 60000 : 86400000; 
       } catch (err) {
         message.channel.send('Missing parameter, please retry.')
         return;
       }
-
-      maxtime = args.filter(arg => arg.name === 'maxtime')[0] ? args.filter(arg => arg.name === 'maxtime')[0].params.shift() * 60000 : 86400000; 
 
       if(choix.length > emojiList.length) return message.channel.send('Please provide less than ' + emojiList.length + ' choices.');
       
@@ -39,8 +39,6 @@ module.exports = {
         options += `${emojiList[index]} - ${chx}\n`;
       });
 
-      let resultats = new Array(choix.length).fill(0);
-
       const embed = new Discord.MessageEmbed()
         .setTitle('Un nouveau vote a été créé')
         .setDescription('Pour participer, veuillez vous référer au message privé qui vous a été envoyé.')
@@ -48,13 +46,13 @@ module.exports = {
         .addField('Question', question)
         .addField('Options', options)
         .setColor('DARK_RED')
-
       message.channel.send(embed);
+
+      let resultats = new Array(choix.length).fill(0);
 
       const roleId = cible.match(/\d+/g)[0];
       message.guild.roles.fetch(roleId)
         .then(role => {
-          let members = [];
           role.members.forEach(member => {
             const embed = new Discord.MessageEmbed()
               .setTitle('Nouveau vote !')
@@ -85,8 +83,30 @@ module.exports = {
                   console.log(resultats);
                 });
               });
-          });
         });
+      });
+
+    }
+
+    async function announceResults(resultats, { question, choix, cible }) {
+      let resultsStr = '';
+    
+      const role = await message.guild.roles.fetch(roleId);
+      const number = role.members.length;
+    
+      resultats.forEach((result, index) => {
+        resultsStr += `${emojiList[index]} - ${chx}\n : ${result} voix sur ${number}, soit ${result*100/number}%\n`
+      });
+    
+      const embed = new Discord.MessageEmbed()
+        .setTitle('Fin du vote !')
+        .setDescription('Voici les résultats et statistiques de ce vote.')
+        .addField('Question', question)
+        .addField('Résultats', resultsStr)
+        .setColor('DARK_RED')
+        
+      message.channel.send(embed);
+      role.members.forEach(member => member.send(embed));
     }
 	},
 };
