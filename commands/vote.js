@@ -1,3 +1,5 @@
+const Discord = require('discord.js');
+
 module.exports = {
 	name: 'vote',
 	description: 'Vote à bulletin secret',
