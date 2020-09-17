@@ -60,7 +60,7 @@ module.exports = {
 
                 const filter = (reaction, user) => true;
                 const collector = message.createReactionCollector(filter, { time: maxtime });
-                collector.on('collect', r,u => console.log(`Collected ${r.emoji.name} from ${user.id}`));
+                collector.on('collect', (react, user) => console.log(`Collected ${react.emoji.name} from ${user.id}`));
                 collector.on('end', collected => console.log(`Collected ${collected.size} items`));
               });
           });
