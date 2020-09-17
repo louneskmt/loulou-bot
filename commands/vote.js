@@ -105,7 +105,7 @@ module.exports = {
       message.guild.roles.fetch(roleId)
         .then(role => {
           const number = role.members.array().length;
-          const participants = resultats.reduce((a,b)=>a+b);
+          const participants = resultats.reduce((a,b)=>a+b); 
 
           resultats.forEach((result, index) => {
             resultsStr += `${emojiList[index]} - ${choix[index]} : ${result} voix sur ${number}, soit ${result*100/number}% des voix\n`;
@@ -119,10 +119,20 @@ module.exports = {
             .addField('Question', question)
             .addField('Nombre de participants :', `${resultats.reduce((a,b)=>a+b)}/${number}`, true)
             .addField('Résultats', resultsStr)
-            .addField(`L'option "${choix[resultats.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0)]}" remporte donc ce vote !`, '🎉🎉', true)
             .setThumbnail('https://www.emoji.co.uk/files/emoji-one/objects-emoji-one/1974-ballot-box-with-ballot.png')
             .setColor('DARK_RED')
-            
+          
+          let max = resulats[0];
+          let exaequo = false;
+          for(i = 1; i < results.length; i++) {
+            if(resultats[i] > max) max = resultats[i];
+            if(resultats[i] = max) exaequo = true;
+          }
+
+          if(participants = 0) embed.addField('Personne n\participé, il n\'y a donc pas de gagnant.');
+          else if (exaequo) embed.addField('Ex-aequo ! Il va falloir refaire un vote...');
+          else embed.addField(`L'option "${choix[resultats.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0)]}" remporte donc ce vote !`, '🎉🎉', true);
+
           message.channel.send(embed);
           role.members.forEach(member => member.send(embed));
         });
