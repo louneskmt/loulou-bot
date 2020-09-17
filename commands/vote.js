@@ -76,31 +76,32 @@ module.exports = {
                 choix.forEach((chx, index) => message.react(emojiList[index]));
 
                 const filter = (reaction, user) => user.id != '676858994685640735';
-                const collector = message.createReactionCollector(filter, { time: maxtime, max: maxchoices });
+                const collector = message.createReactionCollector(filter, { time: maxtime });
 
                 let votes = 0;
                 let choosed = [];
 
                 collector.on('collect', (react, user) => console.log(`Collected ${react.emoji.name} from ${user.id}`));
                 collector.on('collect', (react, user) => {
-                  votes++;
-
-                  const embed = new Discord.MessageEmbed()
-                    .setTitle('✅ Vote pris en compte !')
-                    .setDescription(`Vous avez voté pour l'option ${react.emoji}. Ce vote n'est plus modifiable.`)
-                    .setColor('GREEN');
-                  member.send(embed);
-
                   let index = emojiList.indexOf(react.emoji.name);
                   
-                  if (votes < maxchoices && index == 0) member.send(`Il vous reste ${maxchoices-votes} votes !  Si vous désirez voter une seconde fois blanc, vous pouvez désélectionner la réaction, et la remettre. Attention, cela n'est pas possible pour les autres choix.`);
-                  else if (votes < maxchoices) member.send(`Il vous reste ${maxchoices-votes} votes ! Attention, vous ne pouvez pas voter plusieurs fois pour le même option.`);
-
                   if(!choosed.includes(index)) {
+                    votes++;
+
+                    const embed = new Discord.MessageEmbed()
+                      .setTitle('✅ Vote pris en compte !')
+                      .setDescription(`Vous avez voté pour l'option ${react.emoji}. Ce vote n'est plus modifiable.`)
+                      .setColor('GREEN');
+                    member.send(embed);
+
                     resultats[index] += 1;
                     if(index != 0) choosed.push(index);
-                  }
-                  else member.send(`Vous ne pouvez pas voter plusieurs fois pour le même option.`)
+
+                    if (votes < maxchoices && index == 0) member.send(`Il vous reste ${maxchoices-votes} votes ! Si vous désirez voter une seconde fois blanc, vous pouvez désélectionner la réaction, et la remettre. Attention, cela n'est pas possible pour les autres choix.`);
+                    else if (votes < maxchoices) member.send(`Il vous reste ${maxchoices-votes} votes ! Attention, vous ne pouvez pas voter plusieurs fois pour le même option.`);  
+
+                    if(votes == maxchoices) collector.stop();
+                  } else member.send(`Vous ne pouvez pas voter plusieurs fois pour la même option.`)
                 });
 
                 collector.on('end', () => {
