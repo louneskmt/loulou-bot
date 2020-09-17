@@ -62,11 +62,13 @@ module.exports = {
                 const collector = message.createReactionCollector(filter, { time: maxtime, max: 1 });
                 collector.on('collect', (react, user) => console.log(`Collected ${react.emoji.name} from ${user.id}`));
 
-                const embed = new Discord.MessageEmbed()
-                  .setTitle('✅ Vote pris en compte !')
-                  .setDescription(`Vous avez voté pour l'option ${react.emoji}. Ce vote n'est plus modifiable.`)
-                  .setColor('GREEN')
-                collector.on('collect', (react, user) => member.send(embed));
+                collector.on('collect', (react, user) => {
+                  const embed = new Discord.MessageEmbed()
+                    .setTitle('✅ Vote pris en compte !')
+                    .setDescription(`Vous avez voté pour l'option ${react.emoji}. Ce vote n'est plus modifiable.`)
+                    .setColor('GREEN')
+                  member.send(embed)
+                });
               });
           });
         });
