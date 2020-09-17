@@ -25,7 +25,7 @@ module.exports = {
         question = args.filter(arg => arg.name === 'question')[0].params.shift();
         choix = args.filter(arg => arg.name === 'choix')[0].params;
         cible = args.filter(arg => arg.name === 'cible')[0].params.shift();
-        args.filter(arg => arg.name === 'maxtime')[0].params.shift() | undefined;
+        maxtime = args.filter(arg => arg.name === 'maxtime')[0].params.shift() | undefined;
       } catch (err) {
         message.channel.send('Missing parameter, please retry.')
         return;
