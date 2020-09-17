@@ -1,5 +1,18 @@
 const Discord = require('discord.js');
 
+const emojiList = [
+	'\u0031\u20E3',
+	'\u0032\u20E3',
+	'\u0033\u20E3',
+	'\u0034\u20E3',
+	'\u0035\u20E3',
+	'\u0036\u20E3',
+	'\u0037\u20E3',
+	'\u0038\u20E3',
+	'\u0039\u20E3',
+	'\uD83D\uDD1F'
+];
+
 module.exports = {
 	name: 'vote',
 	description: 'Vote à bulletin secret',
@@ -16,6 +29,8 @@ module.exports = {
         message.channel.send('Missing parameter, please retry.')
         return;
       }
+
+      if(choix.length > emojiList.length) return message.channel.send('Please provide less than ' + emojiList.length + ' choices.');
       
       message.channel.send(`Question : ${question}\nChoix : ${choix}\nCible : ${cible}`);
       const roleId = cible.match(/\d+/g)[0];
@@ -27,7 +42,7 @@ module.exports = {
             let options = '';
             let choixVSreactions = {};
             choix.forEach((chx, index) => {
-              options += `:regional_indicator_${String.fromCharCode(index + 97)}: - ${chx}\n`;
+              options += `${emoji[index]} - ${chx}\n`;
             });
             const embed = new Discord.MessageEmbed()
               .setTitle('Nouveau vote !')
@@ -39,7 +54,7 @@ module.exports = {
             member
               .send(embed)
               .then(message => {
-                choix.forEach((chx, index) => message.react(`:regional_indicator_${String.fromCharCode(index + 97)}:`))
+                choix.forEach((chx, index) => message.react(emojiList[index]));
               });
           });
         });
