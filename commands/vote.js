@@ -19,7 +19,7 @@ module.exports = {
       const roleId = cible.match(/\d+/g)[0];
       message.guild.roles.fetch(roleId)
         .then(role => {
-          let members;
+          let members = [];
           role.members.forEach(member => members.push(member.nickname));
           message.channel.send(`Participants : ${members}`);
         });
