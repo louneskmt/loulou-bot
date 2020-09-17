@@ -108,7 +108,7 @@ module.exports = {
           const participants = resultats.reduce((a,b)=>a+b); 
 
           resultats.forEach((result, index) => {
-            resultsStr += `${emojiList[index]} - ${choix[index]} : ${result} voix sur ${number}, soit ${result*100/number}% des voix\n`;
+            resultsStr += `${emojiList[index]} - ${choix[index]} : ${result} voix sur ${number}, soit ${(result*100/number).toFixed(2)}% des voix\n`;
           });
 
           resultsStr += (participants == number) ? 'Pas d\'abstention' : `${number - participants} abstention(s) soit ${(number - participants)*100/number}%\n`
