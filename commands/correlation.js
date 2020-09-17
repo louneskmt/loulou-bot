@@ -13,7 +13,7 @@ module.exports = {
         const { document } = new JSDOM(html).window;
         var img_source = document.getElementsByTagName("img")[1].getAttribute('src');
         var subjects = document.getElementsByTagName("a");
-        const exampleEmbed = new Discord.RichEmbed()
+        const exampleEmbed = new Discord.MessageEmbed()
 	       .setTitle('Spurious correlations')
          .setDescription(subjects[1].textContent + '\n' + '— VS —' + `\n`+ subjects[2].textContent)
          .setImage(`https://tylervigen.com/${img_source}`)

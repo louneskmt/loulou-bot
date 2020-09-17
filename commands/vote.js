@@ -22,7 +22,13 @@ module.exports = {
         .then(role => {
           let members = [];
           role.members.forEach(member => {
-            member.send(`Question : ${question}\nChoix : ${choix})`);
+
+            const embed = new Discord.MessageEmbed()
+              .setTitle('🗳️ Nouveau vote !')
+              .setDescription('Votre participation a un vote est requise !')
+              .addField('Question', question)
+              .setColor('DARK_RED')
+            member.send(embed);
           });
         });
     }
