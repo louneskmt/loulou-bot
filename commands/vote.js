@@ -48,7 +48,7 @@ module.exports = {
             });
             const embed = new Discord.MessageEmbed()
               .setTitle('Nouveau vote !')
-              .setDescription('Votre participation a un vote est requise ! Afin de voter, cliquez simplement sur la réaction correspondant à l\'option que vous voulez choisir.')
+              .setDescription('Votre participation a un vote est requise ! Afin de voter, cliquez simplement sur la réaction correspondant à l\'option que vous voulez choisir. Attention, le vote n\'est plus modifiable après sélection de l\'option.')
               .setThumbnail('https://www.emoji.co.uk/files/emoji-one/objects-emoji-one/1974-ballot-box-with-ballot.png')
               .addField('Question', question)
               .addField('Options', options)
@@ -59,9 +59,10 @@ module.exports = {
                 choix.forEach((chx, index) => message.react(emojiList[index]));
 
                 const filter = (reaction, user) => user.id != '676858994685640735';
-                const collector = message.createReactionCollector(filter, { time: maxtime });
+                const collector = message.createReactionCollector(filter, { time: maxtime, max: 1 });
                 collector.on('collect', (react, user) => console.log(`Collected ${react.emoji.name} from ${user.id}`));
-                collector.on('end', collected => console.log(`Collected ${collected.size} items`));
+                collector.on('collect', (react, user) => member.send(`Vote pris en compte. Vous avez voté pour l'option ${react.emoji}. Ce vote n'est plus modifiable.`));
+                collector.on('end', collected => console.log('Fin du vote'));
               });
           });
         });
