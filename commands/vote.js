@@ -102,7 +102,7 @@ module.exports = {
           const number = role.members.array().length;
 
           resultats.forEach((result, index) => {
-            resultsStr += `${emojiList[index]} - ${choix[index]} : ${result} voix sur ${number}, soit ${result*100/number}%`;
+            resultsStr += `${emojiList[index]} - ${choix[index]} : ${result} voix sur ${number}, soit ${result*100/number}%\n`;
           });
         
           const embed = new Discord.MessageEmbed()
