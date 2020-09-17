@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 
 const emojiList = [
+  '\u26AA',
 	'\u0031\u20E3',
 	'\u0032\u20E3',
 	'\u0033\u20E3',
@@ -12,6 +13,8 @@ const emojiList = [
 	'\u0039\u20E3',
 	'\uD83D\uDD1F'
 ];
+
+const whiteEmoji = emojiList[0];
 
 module.exports = {
 	name: 'vote',
@@ -32,6 +35,8 @@ module.exports = {
         return;
       }
 
+      choix = ['Vote blanc', ...choix];
+
       if(choix.length > emojiList.length) return message.channel.send('Please provide less than ' + emojiList.length + ' choices.');
       
       let options = '';
@@ -39,10 +44,10 @@ module.exports = {
         options += `${emojiList[index]} - ${chx}\n`;
       });
 
-      let resultats = new Array(choix.length).fill(0);
+      let resultats = new Array(choix.length + 1).fill(0);
 
       const roleId = cible.match(/\d+/g)[0];
-      const announceTimeout = setTimeout(() => announceResults(resultats, { question, choix, cible }), maxtime);
+      const announceTimeout = setTimeout(() => announceResults(resultats, { question, choix, roleId }), maxtime);
 
       message.guild.roles.fetch(roleId)
         .then(role => {
@@ -100,15 +105,19 @@ module.exports = {
       message.guild.roles.fetch(roleId)
         .then(role => {
           const number = role.members.array().length;
+          const participants = resultats.reduce((a,b)=>a+b);
 
           resultats.forEach((result, index) => {
             resultsStr += `${emojiList[index]} - ${choix[index]} : ${result} voix sur ${number}, soit ${result*100/number}% des voix\n`;
           });
-        
+
+          resultsStr += (participants == number) ? 'Pas d\'abstention' : `${number - participants} abstention(s) soit ${(number - participants)*100/number}%\n`
+
           const embed = new Discord.MessageEmbed()
             .setTitle('Fin du vote !')
             .setDescription('Voici les résultats et statistiques de ce vote.')
             .addField('Question', question)
+            .addField('Nombre de participants :', `${resultats.reduce((a,b)=>a+b)}/${number}`, true)
             .addField('Résultats', resultsStr)
             .addField(`L'option "${choix[resultats.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0)]}" remporte donc ce vote !`, '🎉🎉', true)
             .setThumbnail('https://www.emoji.co.uk/files/emoji-one/objects-emoji-one/1974-ballot-box-with-ballot.png')
