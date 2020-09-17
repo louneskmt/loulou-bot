@@ -106,7 +106,7 @@ module.exports = {
                 });
 
                 collector.on('end', () => {
-                  if(resultats.reduce((a,b)=>a+b) >= role.members.array().length) {
+                  if(resultats.reduce((a,b)=>a+b) >= role.members.array().length * maxchoices) {
                     clearTimeout(announceTimeout);
                     announceResults(resultats, { question, choices, roleId, maxchoices });
                   }
