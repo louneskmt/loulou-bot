@@ -34,18 +34,26 @@ module.exports = {
 
       if(choix.length > emojiList.length) return message.channel.send('Please provide less than ' + emojiList.length + ' choices.');
       
-      message.channel.send(`Question : ${question}\nChoix : ${choix}\nCible : ${cible}`);
-      const roleId = cible.match(/\d+/g)[0];
+      let options = '';
+      choix.forEach((chx, index) => {
+        options += `${emojiList[index]} - ${chx}\n`;
+      });
 
+      const embed = new Discord.MessageEmbed()
+        .setTitle('Un nouveau vote a été créé')
+        .setDescription('Pour participer, veuillez vous référer au message privé qui vous a été envoyé.')
+        .setThumbnail('https://www.emoji.co.uk/files/emoji-one/objects-emoji-one/1974-ballot-box-with-ballot.png')
+        .addField('Question', question)
+        .addField('Options', options)
+        .setColor('DARK_RED')
+
+      message.channel.send(embed);
+
+      const roleId = cible.match(/\d+/g)[0];
       message.guild.roles.fetch(roleId)
         .then(role => {
           let members = [];
           role.members.forEach(member => {
-            let options = '';
-            let choixVSreactions = {};
-            choix.forEach((chx, index) => {
-              options += `${emojiList[index]} - ${chx}\n`;
-            });
             const embed = new Discord.MessageEmbed()
               .setTitle('Nouveau vote !')
               .setDescription('Votre participation a un vote est requise ! Afin de voter, cliquez simplement sur la réaction correspondant à l\'option que vous voulez choisir. Attention, le vote n\'est plus modifiable après sélection de l\'option.')
