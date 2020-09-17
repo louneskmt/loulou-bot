@@ -24,12 +24,17 @@ module.exports = {
         .then(role => {
           let members = [];
           role.members.forEach(member => {
-
+            let options = '';
+            let choixVSreactions = {};
+            choix.forEach((chx, index) => {
+              options += `:regional_indicator_${String.fromCharCode(index + 97)}: - ${chx}\n`;
+            });
             const embed = new Discord.MessageEmbed()
               .setTitle('Nouveau vote !')
-              .setDescription('Votre participation a un vote est requise !')
+              .setDescription('Votre participation a un vote est requise ! Afin de voter, cliquez simplement sur la réaction correspondant à l\'option que vous voulez choisir.')
               .setThumbnail('https://www.emoji.co.uk/files/emoji-one/objects-emoji-one/1974-ballot-box-with-ballot.png')
               .addField('Question', question)
+              .addField('Options', options)
               .setColor('DARK_RED')
             member.send(embed);
           });
