@@ -50,6 +50,8 @@ module.exports = {
 
       let resultats = new Array(choix.length).fill(0);
 
+      const announceTimeout = setTimeout(() => announceResults(resultats, { question, choix, cible }), maxtime);
+
       const roleId = cible.match(/\d+/g)[0];
       message.guild.roles.fetch(roleId)
         .then(role => {
@@ -78,14 +80,15 @@ module.exports = {
                   member.send(embed)
 
                   let index = emojiList.indexOf(react.emoji.name);
-                  console.log(index)
                   resultats[index] += 1;
                   console.log(resultats);
+                  if(resultats.reduce((a,b)=>a+b) >= role.members.length)) {
+                    announceResults(resultats, { question, choix, cible });
+                    clearTimeout(announceTimeout);
+                  }
                 });
               });
         });
-      });
-
     }
 
     async function announceResults(resultats, { question, choix, cible }) {
