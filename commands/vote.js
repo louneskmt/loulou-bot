@@ -75,9 +75,14 @@ module.exports = {
                 collector.on('collect', (react, user) => {
                   const embed = new Discord.MessageEmbed()
                     .setTitle('✅ Vote pris en compte !')
-                    .setDescription(`Vous avez voté pour l'option ${react.emoji.name}. Ce vote n'est plus modifiable.`)
+                    .setDescription(`Vous avez voté pour l'option ${react.emoji}. Ce vote n'est plus modifiable.`)
                     .setColor('GREEN')
                   member.send(embed)
+
+                  let index = emojiList.indexOf(react.emoji.name);
+                  console.log(index)
+                  resultats[index] += 1;
+                  console.log(resultats);
                 });
               });
           });
