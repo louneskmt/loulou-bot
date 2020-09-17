@@ -82,7 +82,6 @@ module.exports = {
 
                   let index = emojiList.indexOf(react.emoji.name);
                   resultats[index] += 1;
-                  console.log(resultats);
                   if(resultats.reduce((a,b)=>a+b) >= role.members.length) {
                     clearTimeout(announceTimeout);
                     announceResults(resultats, { question, choix, roleId });
@@ -96,6 +95,7 @@ module.exports = {
     async function announceResults(resultats, { question, choix, roleId }) {
       let resultsStr = '';
     
+      console.logs('Résultats : ' + resultats);
       const role = await message.guild.roles.fetch(roleId);
       const number = role.members.array().length;
     
