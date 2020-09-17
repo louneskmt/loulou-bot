@@ -100,17 +100,19 @@ module.exports = {
       message.guild.roles.fetch(roleId)
         .then(role => {
           const number = role.members.array().length;
-    
-          resultats.forEach((result, index) => {
-            resultsStr += `${emojiList[index]} - ${choix[index]}\n : ${result} voix sur ${number}, soit ${result*100/number}%\n`
-          });
         
           const embed = new Discord.MessageEmbed()
             .setTitle('Fin du vote !')
             .setDescription('Voici les résultats et statistiques de ce vote.')
             .addField('Question', question)
-            .addField('Résultats', resultsStr)
+            //.addField('Résultats', resultsStr)
             .setColor('DARK_RED')
+
+          resultats.forEach((result, index) => {
+            resultsStr += `${emojiList[index]} - ${choix[index]} : ${result} voix sur ${number}, soit ${result*100/number}%\n`
+
+            embed.addField(`${emojiList[index]} - ${choix[index]}`, `${result} voix sur ${number}, soit ${result*100/number}%`);
+          });
             
           message.channel.send(embed);
           role.members.forEach(member => member.send(embed));
