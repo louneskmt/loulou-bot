@@ -42,7 +42,7 @@ module.exports = {
             let options = '';
             let choixVSreactions = {};
             choix.forEach((chx, index) => {
-              options += `${emoji[index]} - ${chx}\n`;
+              options += `${emojiList[index]} - ${chx}\n`;
             });
             const embed = new Discord.MessageEmbed()
               .setTitle('Nouveau vote !')
