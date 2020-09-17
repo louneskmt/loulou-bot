@@ -21,13 +21,13 @@ module.exports = {
 	description: 'Vote à bulletin secret',
 	execute(message, args) {
     let command = args[0];
-    let question, choix, cible;
+    let question, choices, cible;
     console.log(" args :", args)
 
     if (command === 'start') {
       try {
         question = args.filter(arg => arg.name === 'question')[0].params.shift();
-        choix = args.filter(arg => arg.name === 'choix')[0].params;
+        choices = args.filter(arg => arg.name === 'choices')[0].params;
         cible = args.filter(arg => arg.name === 'cible')[0].params.shift();
         maxtime = args.filter(arg => arg.name === 'maxtime')[0] ? args.filter(arg => arg.name === 'maxtime')[0].params.shift() * 60000 : 86400000;
         maxchoices = args.filter(arg => arg.name === 'maxchoices')[0] ? args.filter(arg => arg.name === 'maxchoices')[0].params.shift() : 1;
@@ -36,19 +36,19 @@ module.exports = {
         return;
       }
 
-      choix = ['Vote blanc', ...choix];
+      choices = ['Vote blanc', ...choices];
 
-      if(choix.length > emojiList.length) return message.channel.send('Please provide less than ' + emojiList.length + ' choices.');
+      if(choices.length > emojiList.length) return message.channel.send('Please provide less than ' + emojiList.length + ' choices.');
       
       let options = '';
-      choix.forEach((chx, index) => {
-        options += `${emojiList[index]} - ${chx}\n`;
+      choices.forEach((choice, index) => {
+        options += `${emojiList[index]} - ${choice}\n`;
       });
 
-      let resultats = new Array(choix.length).fill(0);
+      let resultats = new Array(choices.length).fill(0);
 
       const roleId = cible.match(/\d+/g)[0];
-      const announceTimeout = setTimeout(() => announceResults(resultats, { question, choix, roleId, maxchoices }), maxtime);
+      const announceTimeout = setTimeout(() => announceResults(resultats, { question, choices, roleId, maxchoices }), maxtime);
 
       message.guild.roles.fetch(roleId)
         .then(role => {
@@ -74,7 +74,7 @@ module.exports = {
             member
               .send(embed)
               .then(message => {
-                choix.forEach((chx, index) => message.react(emojiList[index]));
+                choices.forEach((choice, index) => message.react(emojiList[index]));
 
                 const filter = (reaction, user) => user.id != '676858994685640735';
                 const collector = message.createReactionCollector(filter, { time: maxtime });
@@ -98,7 +98,7 @@ module.exports = {
                     resultats[index] += 1;
                     if(index != 0) choosed.push(index);
 
-                    if (votes < maxchoices && index == 0) member.send(`Il vous reste ${maxchoices-votes} vote(s) ! Si vous désirez voter une seconde fois blanc, vous pouvez désélectionner la réaction, et la remettre. Attention, cela n'est pas possible pour les autres choix.`);
+                    if (votes < maxchoices && index == 0) member.send(`Il vous reste ${maxchoices-votes} vote(s) ! Si vous désirez voter une seconde fois blanc, vous pouvez désélectionner la réaction, et la remettre. Attention, cela n'est pas possible pour les autres options.`);
                     else if (votes < maxchoices) member.send(`Il vous reste ${maxchoices-votes} votes ! Attention, vous ne pouvez pas voter plusieurs fois pour le même option.`);  
 
                     if(votes == maxchoices) collector.stop();
@@ -108,7 +108,7 @@ module.exports = {
                 collector.on('end', () => {
                   if(resultats.reduce((a,b)=>a+b) >= role.members.array().length) {
                     clearTimeout(announceTimeout);
-                    announceResults(resultats, { question, choix, roleId, maxchoices });
+                    announceResults(resultats, { question, choices, roleId, maxchoices });
                   }
                 });
               });
@@ -116,7 +116,7 @@ module.exports = {
         });
       }
 
-    function announceResults(resultats, { question, choix, roleId, maxchoices }) {
+    function announceResults(resultats, { question, choices, roleId, maxchoices }) {
       let resultsStr = '';
     
       console.log('Résultats : ' + resultats);
@@ -126,7 +126,7 @@ module.exports = {
           const participants = resultats.reduce((a,b)=>a+b); 
 
           resultats.forEach((result, index) => {
-            resultsStr += `${emojiList[index]} - ${choix[index]} : ${result} voix sur ${number}, soit ${(result*100/number).toFixed(2)}% des voix\n`;
+            resultsStr += `${emojiList[index]} - ${choices[index]} : ${result} voix sur ${number}, soit ${(result*100/number).toFixed(2)}% des voix\n`;
           });
 
           resultsStr += (participants == number) ? 'Pas d\'abstention' : `${number - participants} abstention(s) soit ${((number - participants)*100/number).toFixed(2)}%\n`
@@ -154,7 +154,7 @@ module.exports = {
 
           if(participants == 0) embed.addField('Personne n\'a pas participé, il n\'y a donc pas de gagnant.', '❌❌', true);
           else if (exaequo && max >= trueMax) embed.addField('Ex-aequo ! Il va falloir refaire un vote...', '↩️↩️', true);
-          else embed.addField(`L'option "${choix[resultats.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0)]}" remporte donc ce vote !`, '🎉🎉', true);
+          else embed.addField(`L'option "${choices[resultats.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0)]}" remporte donc ce vote !`, '🎉🎉', true);
 
           message.channel.send(embed);
           role.members.forEach(member => member.send(embed));
