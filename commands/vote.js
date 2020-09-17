@@ -91,9 +91,10 @@ module.exports = {
                     .setColor('GREEN');
                   member.send(embed);
 
-                  if(votes < maxchoices) member.send(`Il vous reste ${maxchoices-votes} votes ! Si vous désirez voter une seconde fois blanc, vous pouvez désélectionner la réaction, et la remettre. Attention, cela n'est pas possible pour les autres choix.`);
-
                   let index = emojiList.indexOf(react.emoji.name);
+                  
+                  if (votes < maxchoices && index == 0) member.send(`Il vous reste ${maxchoices-votes} votes !  Si vous désirez voter une seconde fois blanc, vous pouvez désélectionner la réaction, et la remettre. Attention, cela n'est pas possible pour les autres choix.`);
+                  else if (votes < maxchoices) member.send(`Il vous reste ${maxchoices-votes} votes ! Attention, vous ne pouvez pas voter plusieurs fois pour le même option.`);
 
                   if(!choosed.includes(index)) {
                     resultats[index] += 1;
