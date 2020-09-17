@@ -58,8 +58,7 @@ module.exports = {
             .setThumbnail('https://www.emoji.co.uk/files/emoji-one/objects-emoji-one/1974-ballot-box-with-ballot.png')
             .addField('Question', question)
             .addField('Options', options)
-            .addField('Nombre de participants', role.members.array().length)
-            .addField('Nombre de votes par participant', maxchoices)
+            .addField('Nombre de participants || Nombre de votes par participant', `${role.members.array().length} || ${maxchoices}`)
             .setColor('DARK_RED')
           message.channel.send(embed);
 
