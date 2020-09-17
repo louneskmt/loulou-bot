@@ -25,6 +25,7 @@ module.exports = {
         question = args.filter(arg => arg.name === 'question')[0].params.shift();
         choix = args.filter(arg => arg.name === 'choix')[0].params;
         cible = args.filter(arg => arg.name === 'cible')[0].params.shift();
+        args.filter(arg => arg.name === 'maxtime')[0].params.shift() | undefined;
       } catch (err) {
         message.channel.send('Missing parameter, please retry.')
         return;
@@ -53,8 +54,13 @@ module.exports = {
               .setColor('DARK_RED')
             member
               .send(embed)
-              .then(message => {
-                choix.forEach((chx, index) => message.react(emojiList[index]));
+              .then(async message => {
+                await choix.forEach((chx, index) => message.react(emojiList[index]));
+
+                const filter = (reaction, user) => true;
+                const collector = message.createReactionCollector(filter, maxtime ? { time: maxtime * 60000 } : 20000);
+                collector.on('collect', r,u => console.log(`Collected ${r.emoji.name} from ${user.id}`));
+                collector.on('end', collected => console.log(`Collected ${collected.size} items`));
               });
           });
         });
