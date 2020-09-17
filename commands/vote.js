@@ -102,7 +102,7 @@ module.exports = {
           const number = role.members.array().length;
 
           resultats.forEach((result, index) => {
-            resultsStr += `${emojiList[index]} - ${choix[index]} : ${result} voix sur ${number}, soit ${result*100/number}%\n`;
+            resultsStr += `${emojiList[index]} - ${choix[index]} : ${result} voix sur ${number}, soit ${result*100/number}% des voix\n`;
           });
         
           const embed = new Discord.MessageEmbed()
@@ -110,13 +110,9 @@ module.exports = {
             .setDescription('Voici les résultats et statistiques de ce vote.')
             .addField('Question', question)
             .addField('Résultats', resultsStr)
+            .addField(`L'option "${choix[resultats.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0)]}" remporte donc ce vote !`)
             .setThumbnail('https://www.emoji.co.uk/files/emoji-one/objects-emoji-one/1974-ballot-box-with-ballot.png')
             .setColor('DARK_RED')
-
-          
-          resultats.forEach((result, index) => {
-            // embed.addField(`${emojiList[index]} - ${choix[index]}`, `${result} voix sur ${number}, soit ${result*100/number}%`);
-          });
             
           message.channel.send(embed);
           role.members.forEach(member => member.send(embed));
