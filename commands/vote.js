@@ -76,20 +76,21 @@ module.exports = {
                   const embed = new Discord.MessageEmbed()
                     .setTitle('✅ Vote pris en compte !')
                     .setDescription(`Vous avez voté pour l'option ${react.emoji}. Ce vote n'est plus modifiable.`)
-                    .setColor('GREEN')
-                  member.send(embed)
+                    .setColor('GREEN');
+                  member.send(embed);
 
                   let index = emojiList.indexOf(react.emoji.name);
                   resultats[index] += 1;
                   console.log(resultats);
-                  if(resultats.reduce((a,b)=>a+b) >= role.members.length)) {
+                  if(resultats.reduce((a,b)=>a+b) >= role.members.length) {
                     announceResults(resultats, { question, choix, cible });
                     clearTimeout(announceTimeout);
                   }
                 });
               });
+          });
         });
-    }
+      }
 
     async function announceResults(resultats, { question, choix, cible }) {
       let resultsStr = '';
@@ -111,5 +112,5 @@ module.exports = {
       message.channel.send(embed);
       role.members.forEach(member => member.send(embed));
     }
-	},
+  },
 };
