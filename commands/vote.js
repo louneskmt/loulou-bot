@@ -122,7 +122,7 @@ module.exports = {
             .setThumbnail('https://www.emoji.co.uk/files/emoji-one/objects-emoji-one/1974-ballot-box-with-ballot.png')
             .setColor('DARK_RED')
           
-          let max = resulats[0];
+          let max = resultats[0];
           let exaequo = false;
           for(i = 1; i < results.length; i++) {
             if(resultats[i] > max) max = resultats[i];
