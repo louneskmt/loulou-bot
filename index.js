@@ -35,7 +35,7 @@ client.on('message', message => {
 	if (!message.content.startsWith(prefix)) return;
 	const tempArgs = message.content.slice(prefix.length).split(' ');
 	const commandName = tempArgs.shift().toLowerCase();
-	const args = [ tempArgs[1], ...parseArgs(message.content) ];
+	const args = [ tempArgs[0], ...parseArgs(message.content) ];
 
   if(commandName === "change-avatar") {
     if(message.author.id !== "388352032790151189") return;
