@@ -65,15 +65,6 @@ client.on('message', message => {
 // 	generateEmbedAndSend(new Date(), cours)
 // });
 
-var phrases = require('./phrases.js');
-var i = 0;
-var sendRoom = schedule.scheduleJob({hour: 11, minute: 00}, () => {
-  if(i < phrases.length) {
-    client.channels.get("619974049560526867").send(phrases[i]);
-    i++;
-  }
-});
-
 function parseArgs(str) {
 	const regex1 = /--[^-]+/g;
 	const regex2 = /[^\s"]+|"([^"]*)"/gi;
@@ -189,7 +180,7 @@ async function generateEmbedAndSend(date, cours, idChannel="619974049560526867")
       				},
             ]
 					}
-					client.channels.get(idChannel).send({embed: chill});
+					client.channels.fetch(idChannel).send({embed: chill});
 					return;
 			}
 
@@ -220,7 +211,7 @@ async function generateEmbedAndSend(date, cours, idChannel="619974049560526867")
 			}
 		}
 
-		client.channels.get(idChannel).send({embed: embed});
+		client.channels.fetch(idChannel).send({embed: embed});
 
 		if(displayElectro) {
 			console.log(displayElectro)
@@ -245,7 +236,7 @@ async function generateEmbedAndSend(date, cours, idChannel="619974049560526867")
 					}
 				]
 			}
-			client.channels.get(idChannel).send({embed: electroEmbed});
+			client.channels.fetch(idChannel).send({embed: electroEmbed});
 		}
 	});
 }

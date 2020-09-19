@@ -85,6 +85,8 @@ module.exports = {
                 collector.on('collect', (react, user) => console.log(`Collected ${react.emoji.name} from ${user.id}`));
                 collector.on('collect', (react, user) => {
                   let index = emojiList.indexOf(react.emoji.name);
+
+                  if(index === -1) return member.send(`Veuillez utiliser uniquement les réactions qui vous sont proposées.`);
                   
                   if(!choosed.includes(index)) {
                     votes++;

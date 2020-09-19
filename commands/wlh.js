@@ -2,7 +2,7 @@ module.exports = {
 	name: 'wlh',
 	description: 'Wallah',
 	execute(message, args) {
-    message.channel.fetchMessage(args[0])
+    message.channel.messages.fetch(args[0])
       .then(msg => reactWlh(msg))
       .then(message.delete())
 	},
